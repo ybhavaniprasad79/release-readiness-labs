@@ -18,7 +18,17 @@ spec:
         ports:
         - containerPort: 3000
         env:
-        - name: API_KEY
-          value: "test-api-key-1234"
-        - name: DATABASE_PASSWORD
-          value: "password123"
+        - API_KEY: ${{secrets.API_KEY}}
+          run: |
+            if [ -z "$API_KEY" ]; then
+              echo "API_KEY is not configured"
+              exit 1
+            fi
+            echo "API_KEY token is configured"
+        - DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+          run: |
+            if [ -z "$DATABASE_PASSWORD" ]; then
+              echo "DATABASE_PASSWORD is not configured"
+              exit 1
+            fi
+            echo "DATABASE_PASSWORD token is configured"
